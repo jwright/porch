@@ -12,6 +12,8 @@ RSpec.describe "no steps within an organizer" do
 
     result = subject.run email: "test@example.com", password: "blah"
 
+    expect(result).to be_success
     expect(result[:email]).to eq "test@example.com"
+    expect(result[:password]).to eq "blah"
   end
 end
