@@ -37,4 +37,12 @@ RSpec.describe Porch::ExecutableStepDecorator do
       expect(described_class.new(step).step).to eq step
     end
   end
+
+  context "with a step type that is not handled" do
+    let(:step) { 1 }
+
+    it "raises an InvalidStepTypeError" do
+      expect { described_class.new(step) }.to raise_error Porch::InvalidStepTypeError
+    end
+  end
 end

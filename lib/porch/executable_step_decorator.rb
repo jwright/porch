@@ -22,6 +22,7 @@ module Porch
 
     def decorate(step)
       decorator = self.class.registered_decorators.find { |d| d.decorates?(step) }
+      raise InvalidStepTypeError.new(step) if decorator.nil?
       decorator.new(step)
     end
   end
