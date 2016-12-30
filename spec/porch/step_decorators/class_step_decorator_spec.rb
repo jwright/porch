@@ -20,8 +20,9 @@ RSpec.describe Porch::ClassStepDecorator do
     end
 
     let(:context) { Hash.new }
+    let(:organizer) { double(:organizer) }
     let(:step) { DummyClass }
-    subject { described_class.new step }
+    subject { described_class.new step, organizer }
 
     it "instantiates an instance of the object and sends call message with the context" do
       expect_any_instance_of(step).to receive(:call).with context

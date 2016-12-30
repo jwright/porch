@@ -2,12 +2,13 @@ module Porch
   class MethodStepDecorator
     attr_reader :step
 
-    def initialize(step)
+    def initialize(step, organizer)
       @step = step
     end
 
     def execute(context)
-      Context.new(context)
+      ctx = Context.new(context)
+      ctx
     end
 
     def self.decorates?(step)

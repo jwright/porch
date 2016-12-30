@@ -2,7 +2,7 @@ module Porch
   class ProcStepDecorator
     attr_reader :step
 
-    def initialize(step)
+    def initialize(step, _organizer)
       @step = step
     end
 

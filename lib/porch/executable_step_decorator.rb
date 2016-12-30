@@ -11,7 +11,7 @@ module Porch
     end
 
     def initialize(step, organizer)
-      @decorated_step = decorate step
+      @decorated_step = decorate step, organizer
     end
 
     def execute(context)
@@ -24,10 +24,10 @@ module Porch
 
     private
 
-    def decorate(step)
+    def decorate(step, organizer)
       decorator = self.class.registered_decorators.find { |d| d.decorates?(step) }
       raise InvalidStepTypeError.new(step) if decorator.nil?
-      decorator.new(step)
+      decorator.new(step, organizer)
     end
   end
 end

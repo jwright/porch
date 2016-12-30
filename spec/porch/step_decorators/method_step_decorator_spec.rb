@@ -16,4 +16,17 @@ RSpec.describe Porch::MethodStepDecorator do
       expect(described_class).to_not be_decorates Object.new
     end
   end
+
+  describe "#execute" do
+    let(:context) { Hash.new }
+    let(:organizer) { double(:organizer, call: context) }
+    let(:step) { :call }
+    subject { described_class.new step, organizer }
+
+    xit "sends the method with the context" do
+      expect(organizer).to receive(:call).with context
+
+      subject.execute context
+    end
+  end
 end

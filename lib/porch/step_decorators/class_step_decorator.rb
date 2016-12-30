@@ -2,7 +2,7 @@ module Porch
   class ClassStepDecorator
     attr_reader :step
 
-    def initialize(step)
+    def initialize(step, _organizer)
       @step = step
     end
 
