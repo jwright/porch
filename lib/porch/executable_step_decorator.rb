@@ -10,7 +10,7 @@ module Porch
       decorated_step.step
     end
 
-    def initialize(step)
+    def initialize(step, organizer)
       @decorated_step = decorate step
     end
 

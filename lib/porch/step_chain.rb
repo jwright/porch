@@ -8,11 +8,11 @@ module Porch
     end
 
     def add(step)
-      steps << ExecutableStepDecorator.new(step)
+      steps << ExecutableStepDecorator.new(step, organizer)
     end
 
     def insert(index, step)
-      steps.insert index, ExecutableStepDecorator.new(step)
+      steps.insert index, ExecutableStepDecorator.new(step, organizer)
     end
 
     def remove(step)
