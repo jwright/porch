@@ -28,4 +28,26 @@ RSpec.describe Porch::StepChain do
       expect(subject.steps.map(&:step)).to include :bleh
     end
   end
+
+  describe "#execute" do
+    let(:context) { Hash.new }
+
+    it "calls execute on each step" do
+      subject.add :blah
+      subject.add Proc.new {}
+
+      expect_any_instance_of(Porch::MethodStepDecorator).to receive(:execute)
+      expect_any_instance_of(Porch::ProcStepDecorator).to receive(:execute)
+
+      subject.execute context
+    end
+
+    it "passes in a new instance of the context" do
+      subject.add :blah
+
+      result = subject.execute context
+
+      expect(result).to_not equal context
+    end
+  end
 end

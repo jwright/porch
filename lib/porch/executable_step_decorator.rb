@@ -14,6 +14,10 @@ module Porch
       @decorated_step = decorate step
     end
 
+    def execute(context)
+      decorated_step.execute context
+    end
+
     def self.registered_decorators
       [ClassStepDecorator, MethodStepDecorator, ProcStepDecorator].freeze
     end
