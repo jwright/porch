@@ -19,10 +19,19 @@ RSpec.describe Porch::Organizer do
       expect(subject.with).to be_kind_of Porch::Context
     end
 
-    context "without parameters and no steps" do
-      it "returns an empty context" do
-        expect(subject.with).to be_empty
-      end
+    it "returns an empty context" do
+      expect(subject.with).to be_empty
+    end
+
+    it "yields to a block chain if specified" do
+      expect { |b| subject.with(&b) }.to yield_with_args(Porch::StepChain)
+    end
+
+    it "executes the chain with the context" do
+      expect_any_instance_of(Porch::StepChain).to \
+        receive(:execute).with(Porch::Context)
+
+      subject.with
     end
   end
 end
