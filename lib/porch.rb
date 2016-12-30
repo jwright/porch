@@ -1,3 +1,4 @@
+require "porch/context"
 require "porch/organizer"
 require "porch/version"
 
