@@ -14,6 +14,12 @@ RSpec.describe Porch::StepChain do
     it "adds a step to the chain" do
       expect { subject.add :blah }.to change { subject.steps.count }.by 1
     end
+
+    context "with a block" do
+      it "adds a step to the chain" do
+        expect { subject.add { |context| } }.to change { subject.steps.count }.by 1
+      end
+    end
   end
 
   describe "#insert" do

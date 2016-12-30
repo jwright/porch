@@ -7,11 +7,13 @@ module Porch
       @steps = []
     end
 
-    def add(step)
+    def add(step=nil, &block)
+      step = block if block_given?
       steps << ExecutableStepDecorator.new(step, organizer)
     end
 
-    def insert(index, step)
+    def insert(index, step=nil, &block)
+      step = block if block_given?
       steps.insert index, ExecutableStepDecorator.new(step, organizer)
     end
 
