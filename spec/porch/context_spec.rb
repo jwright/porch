@@ -7,6 +7,10 @@ RSpec.describe Porch::Context do
       expect(subject.values).to eq [:b, :d]
     end
 
+    it "initializes as successful" do
+      expect(subject).to be_success
+    end
+
     it "can handle a nil context" do
       subject = described_class.new nil
 
@@ -39,6 +43,14 @@ RSpec.describe Porch::Context do
 
       expect(context).to eq result
       expect(result.keys).to eq [:a, :c]
+    end
+
+    it "copies the successful indicator" do
+      subject = described_class.new({}, false)
+
+      result = subject.deep_dup
+
+      expect(result).to be_failure
     end
   end
 end
