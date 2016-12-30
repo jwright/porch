@@ -1,4 +1,11 @@
 RSpec.describe Porch::StepChain do
+  let(:organizer) { double(:organizer) }
+  subject { described_class.new organizer }
+
+  it "initializes with the organizer" do
+    expect(subject.organizer).to eq organizer
+  end
+
   it "initializes with empty steps" do
     expect(subject.steps).to be_empty
   end

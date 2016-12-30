@@ -1,8 +1,9 @@
 module Porch
   class StepChain
-    attr_reader :steps
+    attr_reader :organizer, :steps
 
-    def initialize
+    def initialize(organizer)
+      @organizer = organizer
       @steps = []
     end
 

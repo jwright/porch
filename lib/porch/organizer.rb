@@ -5,7 +5,7 @@ module Porch
     def with(parameters={})
       @context = Context.new parameters
 
-      chain = StepChain.new
+      chain = StepChain.new(self)
       yield chain if block_given?
 
       chain.execute context
