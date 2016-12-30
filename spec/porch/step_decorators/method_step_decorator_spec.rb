@@ -23,7 +23,7 @@ RSpec.describe Porch::MethodStepDecorator do
     let(:step) { :call }
     subject { described_class.new step, organizer }
 
-    xit "sends the method with the context" do
+    it "sends the method with the context" do
       expect(organizer).to receive(:call).with context
 
       subject.execute context

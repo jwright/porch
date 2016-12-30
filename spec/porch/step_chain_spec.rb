@@ -50,6 +50,7 @@ RSpec.describe Porch::StepChain do
     end
 
     it "passes in a new instance of the context" do
+      allow(organizer).to receive(:blah)
       subject.add :blah
 
       result = subject.execute context
