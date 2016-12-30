@@ -14,7 +14,7 @@ RSpec.describe Porch::StepChain do
       subject.add :bleh
 
       expect { subject.insert 0, :blah }.to change { subject.steps.count }.by 1
-      expect(subject.steps.first).to eq :blah
+      expect(subject.steps.first.step).to eq :blah
     end
   end
 
@@ -24,8 +24,8 @@ RSpec.describe Porch::StepChain do
       subject.add :bleh
 
       expect { subject.remove :blah }.to change { subject.steps.count }.by -1
-      expect(subject.steps).to_not include :blah
-      expect(subject.steps).to include :bleh
+      expect(subject.steps.map(&:step)).to_not include :blah
+      expect(subject.steps.map(&:step)).to include :bleh
     end
   end
 end

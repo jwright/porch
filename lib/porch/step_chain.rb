@@ -7,15 +7,15 @@ module Porch
     end
 
     def add(step)
-      steps << step
+      steps << ExecutableStepDecorator.new(step)
     end
 
     def insert(index, step)
-      steps.insert index, step
+      steps.insert index, ExecutableStepDecorator.new(step)
     end
 
     def remove(step)
-      @steps.delete step
+      @steps.delete_if { |decorated_step| decorated_step.step == step }
     end
 
     def execute(context)
