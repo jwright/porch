@@ -57,5 +57,11 @@ RSpec.describe Porch::StepChain do
 
       expect(result).to_not equal context
     end
+
+    context "without any steps" do
+      it "returns the original context values" do
+        expect(subject.execute({ a: :b })).to eq({ a: :b })
+      end
+    end
   end
 end

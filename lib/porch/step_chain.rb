@@ -20,7 +20,8 @@ module Porch
     end
 
     def execute(context)
-      Context.new steps.map { |step| step.execute context }.last
+      ctx = Context.new context
+      steps.map { |step| step.execute ctx }.last || ctx
     end
   end
 end
