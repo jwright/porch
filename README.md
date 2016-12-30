@@ -39,7 +39,7 @@ module Services
     end
 
     def register
-      with(attributes).steps do |chain|
+      with(attributes) do |chain|
         chain.add CreateUser
         chain.add SendWelcomeEmail
         chain.add CreateBillingCustomer
@@ -121,7 +121,7 @@ module Services
     # ...
 
     def register
-      with(attributes).steps do |chain|
+      with(attributes) do |chain|
         # ...
         chain.add :send_welcome_email do |context|
           UserMailer.welcome(context.user).deliver_later
@@ -147,7 +147,7 @@ module Services
     # ...
 
     def register
-      with(attributes).steps do |chain|
+      with(attributes) do |chain|
         # ...
         chain.add :send_welcome_email
         # ...
