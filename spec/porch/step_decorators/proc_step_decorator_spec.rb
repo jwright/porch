@@ -12,4 +12,16 @@ RSpec.describe Porch::ProcStepDecorator do
       expect(described_class).to_not be_decorates Object
     end
   end
+
+  describe "#execute" do
+    let(:context) { Hash.new }
+    let(:step) { Proc.new {} }
+    subject { described_class.new step }
+
+    it "calls the proc with the context" do
+      expect(step).to receive(:call).with(context)
+
+      subject.execute context
+    end
+  end
 end

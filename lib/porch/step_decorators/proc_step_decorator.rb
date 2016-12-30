@@ -7,7 +7,9 @@ module Porch
     end
 
     def execute(context)
-      Context.new(context)
+      ctx = Context.new(context)
+      step.call ctx
+      ctx
     end
 
     def self.decorates?(step)
