@@ -43,14 +43,16 @@ RSpec.describe Porch::StepChain do
   end
 
   describe "#execute" do
-    let(:context) { Hash.new }
+    let(:context) { Porch::Context.new }
 
     it "calls execute on each step" do
       subject.add :blah
       subject.add Proc.new {}
 
-      expect_any_instance_of(Porch::MethodStepDecorator).to receive(:execute)
-      expect_any_instance_of(Porch::ProcStepDecorator).to receive(:execute)
+      expect_any_instance_of(Porch::MethodStepDecorator).to \
+        receive(:execute).and_return context
+      expect_any_instance_of(Porch::ProcStepDecorator).to \
+        receive(:execute).and_return context
 
       subject.execute context
     end
@@ -67,6 +69,19 @@ RSpec.describe Porch::StepChain do
     context "without any steps" do
       it "returns the original context values" do
         expect(subject.execute({ a: :b })).to eq({ a: :b })
+      end
+    end
+
+    context "with a failed spec" do
+      it "does not execute further steps" do
+        subject.add :blah
+        subject.add Proc.new {}
+
+        allow_any_instance_of(Porch::MethodStepDecorator).to \
+          receive(:execute).and_return(double(:context, stop_processing?: true))
+        expect_any_instance_of(Porch::ProcStepDecorator).to_not receive(:execute)
+
+        subject.execute context
       end
     end
   end

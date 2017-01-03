@@ -23,7 +23,9 @@ module Porch
 
     def execute(context)
       ctx = Context.new context
-      steps.map { |step| ctx = step.execute ctx }.last || ctx
+      steps.map do |step|
+        ctx = step.execute ctx unless ctx.stop_processing?
+      end.last || ctx
     end
   end
 end
