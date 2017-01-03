@@ -76,6 +76,18 @@ RSpec.describe Porch::Context do
     end
   end
 
+  describe "#method_missing" do
+    subject { described_class.new blah: :bleh }
+
+    it "returns a key value if the method name is in the context" do
+      expect(subject.blah).to eq :bleh
+    end
+
+    it "raises a no method error found if the method name is not in the context" do
+      expect { subject.bleh }.to raise_error NoMethodError
+    end
+  end
+
   describe "#stop_processing?" do
     subject { described_class.new({}, true) }
 

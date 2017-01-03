@@ -21,6 +21,11 @@ module Porch
       !success?
     end
 
+    def method_missing(name, *args, &block)
+      return fetch(name) if key?(name)
+      super
+    end
+
     def success?
       @success
     end
