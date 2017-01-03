@@ -11,6 +11,10 @@ RSpec.describe Porch::Context do
       expect(subject).to be_success
     end
 
+    it "initializes with a nil message" do
+      expect(subject.message).to be_nil
+    end
+
     it "can handle a nil context" do
       subject = described_class.new nil
 
@@ -29,19 +33,19 @@ RSpec.describe Porch::Context do
 
   describe "#deep_dup" do
     it "copies the object into a new object" do
-      context = described_class.new
+      subject = described_class.new
 
-      result = context.deep_dup
+      result = subject.deep_dup
 
-      expect(context).to_not equal result
+      expect(subject).to_not equal result
     end
 
     it "copies the hash keys and values" do
-      context = described_class.new({ a: :b, c: :d })
+      subject = described_class.new({ a: :b, c: :d })
 
-      result = context.deep_dup
+      result = subject.deep_dup
 
-      expect(context).to eq result
+      expect(subject).to eq result
       expect(result.keys).to eq [:a, :c]
     end
 
@@ -51,6 +55,34 @@ RSpec.describe Porch::Context do
       result = subject.deep_dup
 
       expect(result).to be_failure
+    end
+  end
+
+  describe "#fail!" do
+    subject { described_class.new({}, true) }
+
+    it "marks the context as failed" do
+      subject.fail!
+
+      expect(subject).to be_failure
+    end
+
+    context "failing with a message" do
+      it "sets the message on the context" do
+        subject.fail! "Better luck next time!"
+
+        expect(subject.message).to eq "Better luck next time!"
+      end
+    end
+  end
+
+  describe "#stop_processing?" do
+    subject { described_class.new({}, true) }
+
+    it "stops when a failure occurs" do
+      subject.fail!
+
+      expect(subject).to be_stop_processing
     end
   end
 end

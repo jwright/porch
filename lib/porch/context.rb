@@ -1,6 +1,9 @@
 module Porch
   class Context < Hash
+    attr_reader :message
+
     def initialize(context={}, success=true)
+      @message = nil
       @success = success
       deep_duplicate(context)
     end
@@ -9,12 +12,21 @@ module Porch
       self.class.new(self, self.success?)
     end
 
+    def fail!(message="")
+      @message = message
+      @success = false
+    end
+
     def failure?
       !success?
     end
 
     def success?
       @success
+    end
+
+    def stop_processing?
+      failure?
     end
 
     private
