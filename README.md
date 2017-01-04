@@ -163,9 +163,67 @@ module Services
 end
 ```
 
+### Failing the chain
+
+At any step, you can set the `Porch::Context` as a failure which will stop processing the remaining steps and set the `Context` as a failed context with an optional message.
+
+```
+class RegistersUser
+  include Porch::Organizer
+
+  # ...
+
+  def register
+    with(attributes) do |chain|
+      # ...
+      chain.add :send_welcome_email
+      # ...
+    end
+  end
+
+  private
+
+  def send_welcome_email(context)
+    context.fail! "Better luck next time!" if some_failure_condition?
+    UserMailer.welcome(context.user).deliver_later
+  end
+end
+
+result = RegistersUser.new(email: "test@example.com").register
+if result.failure?
+  puts result.message # => "Better luck next time!"
+end
+```
+
 ### Skipping steps
 
-### Failing the chain
+At any step, you can skip the remaining actions in the organizer. This stops the running of the remaining actions but the `Porch::Context` will still return a successful `Porch::Context`.
+
+```
+class RegistersUser
+  include Porch::Organizer
+
+  # ...
+
+  def register
+    with(attributes) do |chain|
+      # ...
+      chain.add :save_user
+      # ...
+    end
+  end
+
+  private
+
+  def save_user(context)
+    User.create context
+    context.skip_remaining! if sending_emails_disabled?
+  end
+end
+
+result = RegistersUser.new(email: "test@example.com").register
+result.success? # => true
+```
 
 ### Validating the context
 
