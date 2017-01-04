@@ -1,4 +1,5 @@
 require "porch/context"
+require "porch/core_ext"
 require "porch/errors"
 require "porch/executable_step_decorator"
 require "porch/guard_rail"
