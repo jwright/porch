@@ -26,6 +26,12 @@ module Porch
       !success?
     end
 
+    def guard(&block)
+      result = super
+      skip_remaining! if result.failure?
+      result
+    end
+
     def guard!(&block)
       result = guard &block
       fail!(HumanError.new(result.errors).message) if result.failure?

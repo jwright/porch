@@ -76,6 +76,18 @@ RSpec.describe Porch::Context do
     end
   end
 
+  describe "#guard" do
+    subject { described_class.new({email: ""}) }
+
+    context "with invalid arguments" do
+      it "skips the remaining actions" do
+        subject.guard { required(:email).filled }
+
+        expect(subject).to be_skip_remaining
+      end
+    end
+  end
+
   describe "#guard!" do
     subject { described_class.new({email: ""}) }
 
