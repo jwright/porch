@@ -1,5 +1,9 @@
+require "porch/guard_rail"
+
 module Porch
   class Context < Hash
+    include Porch::GuardRail
+
     attr_reader :message
 
     def initialize(context={}, success=true)
@@ -19,6 +23,12 @@ module Porch
 
     def failure?
       !success?
+    end
+
+    def guard!(&block)
+      result = guard &block
+      fail!(HumanError.new(result.errors).message) if result.failure?
+      result
     end
 
     def method_missing(name, *args, &block)

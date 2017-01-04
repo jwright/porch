@@ -76,6 +76,24 @@ RSpec.describe Porch::Context do
     end
   end
 
+  describe "#guard!" do
+    subject { described_class.new({email: ""}) }
+
+    context "with invalid arguments" do
+      it "marks the context as a failure" do
+        subject.guard! { required(:email).filled }
+
+        expect(subject).to be_failure
+      end
+
+      it "sets the message of the context" do
+        subject.guard! { required(:email).filled }
+
+        expect(subject.message).to eq "Email must be filled"
+      end
+    end
+  end
+
   describe "#method_missing" do
     subject { described_class.new blah: :bleh }
 
