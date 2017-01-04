@@ -9,6 +9,7 @@ module Porch
     def initialize(context={}, success=true)
       @message = nil
       @success = success
+      @skip_remaining = false
       deep_duplicate(context)
     end
 
@@ -36,12 +37,20 @@ module Porch
       super
     end
 
+    def skip_remaining?
+      !!@skip_remaining
+    end
+
+    def skip_remaining!
+      @skip_remaining = true
+    end
+
     def success?
       @success
     end
 
     def stop_processing?
-      failure?
+      failure? || skip_remaining?
     end
 
     private

@@ -114,5 +114,11 @@ RSpec.describe Porch::Context do
 
       expect(subject).to be_stop_processing
     end
+
+    it "stops when the remaining actions are skipped" do
+      subject.skip_remaining!
+
+      expect(subject).to be_stop_processing
+    end
   end
 end
