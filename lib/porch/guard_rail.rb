@@ -1,3 +1,5 @@
+require_relative "guard_rail/guard"
+
 module Porch
   module GuardRail
     def guard(&block)
