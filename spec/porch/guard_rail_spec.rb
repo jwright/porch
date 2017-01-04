@@ -6,7 +6,11 @@ RSpec.describe Porch::GuardRail do
     expect(subject).to respond_to(:guard)
   end
 
-  it "adds a `guard!` instance method" do
-    expect(subject).to respond_to(:guard!)
+  describe "#guard" do
+    let(:schema) { Proc.new { required(:email) }}
+
+    it "returns the result of the validation" do
+      expect(subject.guard(&schema)).to be_success
+    end
   end
 end
