@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    porch (0.0.1)
+    porch (0.1.0)
       dry-validation (~> 0.10.4)
 
 GEM
