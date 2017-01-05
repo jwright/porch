@@ -38,7 +38,7 @@ GEM
       dry-logic (~> 0.4, >= 0.4.0)
       dry-types (~> 0.9, >= 0.9.0)
     inflecto (0.0.2)
-    rake (10.5.0)
+    rake (10.0.4)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -57,10 +57,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.12)
+  bundler (~> 1.12.0)
   porch!
-  rake (~> 10.0)
-  rspec (~> 3.0)
+  rake (~> 10.0.0)
+  rspec (~> 3.5.0)
 
 BUNDLED WITH
    1.12.5
