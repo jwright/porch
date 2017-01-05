@@ -1,6 +1,8 @@
 Porch
 ======
 
+[![Gem Version](https://badge.fury.io/rb/porch.svg)](https://badge.fury.io/rb/porch)
+
 [ ![Codeship Status for jwright/porch](https://app.codeship.com/projects/8780ad70-b5ae-0134-fb0d-62cbe9f5cc84/status?branch=master)](https://app.codeship.com/projects/194128)
 
 A simple service layer pattern for plain old Ruby objects.
