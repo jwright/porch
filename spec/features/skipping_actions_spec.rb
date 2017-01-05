@@ -1,4 +1,4 @@
-RSpec.describe "skipping the remaining steps within an organizer" do
+RSpec.describe "skipping actions" do
   class SkippingStepsExample
     include Porch::Organizer
 
@@ -27,6 +27,10 @@ RSpec.describe "skipping the remaining steps within an organizer" do
     expect(subject).to_not receive(:second_step)
 
     subject.run
+  end
+
+  it "returns a successful result" do
+    expect(subject.run).to be_success
   end
 
   context "skipping the current step" do
