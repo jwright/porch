@@ -12,7 +12,8 @@ RSpec.describe "skipping the remaining steps within an organizer" do
     private
 
     def first_step(context)
-      context.skip_remaining!
+      context.skip_remaining! true
+      context[:got_here] = true
     end
 
     def second_step(context)
@@ -26,5 +27,13 @@ RSpec.describe "skipping the remaining steps within an organizer" do
     expect(subject).to_not receive(:second_step)
 
     subject.run
+  end
+
+  context "skipping the current step" do
+    it "skips the remaining logic in the current step" do
+      result = subject.run
+
+      expect(result[:got_here]).to be_nil
+    end
   end
 end

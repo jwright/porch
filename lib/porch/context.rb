@@ -47,8 +47,9 @@ module Porch
       !!@skip_remaining
     end
 
-    def skip_remaining!
+    def skip_remaining!(skip_current=false)
       @skip_remaining = true
+      throw :stop_current_step_execution, self if skip_current
     end
 
     def success?

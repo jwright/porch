@@ -15,7 +15,9 @@ module Porch
     end
 
     def execute(context)
-      decorated_step.execute context
+      catch :stop_current_step_execution do
+        decorated_step.execute context
+      end
     end
 
     def self.registered_decorators
