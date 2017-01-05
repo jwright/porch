@@ -20,6 +20,7 @@ module Porch
     def fail!(message="")
       @message = message
       @success = false
+      throw :stop_current_step_execution, self
     end
 
     def failure?

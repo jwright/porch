@@ -1,4 +1,6 @@
 RSpec.describe Porch::Context do
+  include  Porch::SpecHelper::ContextFailureExample
+
   describe "#initialize" do
     it "can be initialized with a hash" do
       subject = described_class.new({ a: :b, c: :d })
@@ -61,6 +63,8 @@ RSpec.describe Porch::Context do
   describe "#fail!" do
     subject { described_class.new({}, true) }
 
+    around { |example| wrap_skipping_step_catch example }
+
     it "marks the context as failed" do
       subject.fail!
 
@@ -91,6 +95,8 @@ RSpec.describe Porch::Context do
   describe "#guard!" do
     subject { described_class.new({email: ""}) }
 
+    around { |example| wrap_skipping_step_catch example }
+
     context "with invalid arguments" do
       it "marks the context as a failure" do
         subject.guard! { required(:email).filled }
@@ -120,6 +126,8 @@ RSpec.describe Porch::Context do
 
   describe "#stop_processing?" do
     subject { described_class.new({}, true) }
+
+    around { |example| wrap_skipping_step_catch example }
 
     it "stops when a failure occurs" do
       subject.fail!
