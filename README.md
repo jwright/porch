@@ -1,6 +1,8 @@
 Porch
 ======
 
+[ ![Codeship Status for jwright/porch](https://app.codeship.com/projects/8780ad70-b5ae-0134-fb0d-62cbe9f5cc84/status?branch=master)](https://app.codeship.com/projects/194128)
+
 A simple service layer pattern for plain old Ruby objects.
 
 ## DESCRIPTION
@@ -243,7 +245,7 @@ class SomeStep
 end
 ```
 
-`Porch::Context#guard!` (with a bang(!)) can be used and if the validation fails, the `Context` will be marked as a failure. The failure message for the `Context` will be set to be acomma-seperated list of the context errors that failed.
+`Porch::Context#guard!` (with a bang(!)) can be used and if the validation fails, the `Context` will be marked as a failure. The failure message for the `Context` will be set to be a comma-seperated list of the context errors that failed.
 
 ```
 class SomeStep
