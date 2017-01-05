@@ -70,7 +70,7 @@ end
 
 ### Defining steps or actions
 
-You can define steps as classes and include some nice helper methods.
+You can define steps as classes and include some nice helper methods. (COMING SOON)
 
 ```
 # app/services/steps/create_user.rb
@@ -81,8 +81,8 @@ class CreateUser
   include Porch::Step
 
   params do
-    required(:email, :string, format: RegEx.email_address)
-    required(:password, :string, min_length: 8)
+    required(:email).filled(type?: :str, format?: RegEx.email_address)
+    required(:password).filled(type?: :str, min_size?: 8)
   end
 
   def call(context)
@@ -161,6 +161,107 @@ module Services
     end
   end
 end
+```
+
+### Failing the chain
+
+At any step, you can set the `Porch::Context` as a failure which will stop processing the remaining steps and set the `Context` as a failed context with an optional message.
+
+```
+class RegistersUser
+  include Porch::Organizer
+
+  # ...
+
+  def register
+    with(attributes) do |chain|
+      # ...
+      chain.add :send_welcome_email
+      # ...
+    end
+  end
+
+  private
+
+  def send_welcome_email(context)
+    context.fail! "Better luck next time!" if some_failure_condition?
+    UserMailer.welcome(context.user).deliver_later
+  end
+end
+
+result = RegistersUser.new(email: "test@example.com").register
+if result.failure?
+  puts result.message # => "Better luck next time!"
+end
+```
+
+### Skipping steps
+
+At any step, you can skip the remaining actions in the organizer. This stops the running of the remaining actions but the `Porch::Context` will still return a successful `Porch::Context`.
+
+```
+class RegistersUser
+  include Porch::Organizer
+
+  # ...
+
+  def register
+    with(attributes) do |chain|
+      # ...
+      chain.add :save_user
+      # ...
+    end
+  end
+
+  private
+
+  def save_user(context)
+    User.create context
+    context.skip_remaining! if sending_emails_disabled?
+  end
+end
+
+result = RegistersUser.new(email: "test@example.com").register
+result.success? # => true
+```
+
+### Validating the context
+
+Porch comes with multiple ways that you can validate each step is setup correctly. It uses the DSL provided by [dry-validation](http://dry-rb.org/gems/dry-validation/).
+
+Several helper methods are included in the `Porch::Context` to guard against an invalid `Porch::Context`.
+
+`Porch::Context#guard` can be used and if the validation fails, the `Context` will skip the remaining actions.
+
+```
+class SomeStep
+  def call(context)
+    context.guard { required(:email) }
+    # The rest of the action will not be performed and the rest of the actions will be
+    # skipped if the guard fails
+  end
+end
+```
+
+`Porch::Context#guard!` (with a bang(!)) can be used and if the validation fails, the `Context` will be marked as a failure. The failure message for the `Context` will be set to be acomma-seperated list of the context errors that failed.
+
+```
+class SomeStep
+  def call(context)
+    context.guard! { required(:email) }
+    # The rest of the action will not be performed and the rest of the actions will be
+    # skipped and the action will be marked as failed if the guard fails
+  end
+end
+```
+
+At any point, you can use the `Porch::GuardRail::Guard` helper method to validate any hash (including the `Porch::Context`).
+
+```
+hash = { email: "test@example" }
+result = Porch::GuardRail::Guard.new(hash).against { required(:email).value(format?: RegEx::Email) }
+result.success? # => false
+result.errors # => { email: ["is invalid"] }
 ```
 
 ## CONTRIBUTING

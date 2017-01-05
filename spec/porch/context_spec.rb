@@ -1,4 +1,6 @@
 RSpec.describe Porch::Context do
+  include  Porch::SpecHelper::ContextFailureExample
+
   describe "#initialize" do
     it "can be initialized with a hash" do
       subject = described_class.new({ a: :b, c: :d })
@@ -61,6 +63,8 @@ RSpec.describe Porch::Context do
   describe "#fail!" do
     subject { described_class.new({}, true) }
 
+    around { |example| wrap_skipping_step_catch example }
+
     it "marks the context as failed" do
       subject.fail!
 
@@ -76,11 +80,63 @@ RSpec.describe Porch::Context do
     end
   end
 
+  describe "#guard" do
+    subject { described_class.new({email: ""}) }
+
+    context "with invalid arguments" do
+      it "skips the remaining actions" do
+        subject.guard { required(:email).filled }
+
+        expect(subject).to be_skip_remaining
+      end
+    end
+  end
+
+  describe "#guard!" do
+    subject { described_class.new({email: ""}) }
+
+    around { |example| wrap_skipping_step_catch example }
+
+    context "with invalid arguments" do
+      it "marks the context as a failure" do
+        subject.guard! { required(:email).filled }
+
+        expect(subject).to be_failure
+      end
+
+      it "sets the message of the context" do
+        subject.guard! { required(:email).filled }
+
+        expect(subject.message).to eq "Email must be filled"
+      end
+    end
+  end
+
+  describe "#method_missing" do
+    subject { described_class.new blah: :bleh }
+
+    it "returns a key value if the method name is in the context" do
+      expect(subject.blah).to eq :bleh
+    end
+
+    it "raises a no method error found if the method name is not in the context" do
+      expect { subject.bleh }.to raise_error NoMethodError
+    end
+  end
+
   describe "#stop_processing?" do
     subject { described_class.new({}, true) }
 
+    around { |example| wrap_skipping_step_catch example }
+
     it "stops when a failure occurs" do
       subject.fail!
+
+      expect(subject).to be_stop_processing
+    end
+
+    it "stops when the remaining actions are skipped" do
+      subject.skip_remaining!
 
       expect(subject).to be_stop_processing
     end
