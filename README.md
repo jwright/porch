@@ -275,6 +275,12 @@ result.errors # => { email: ["is invalid"] }
 1. Push your new branch `git push origin my-awesome-feature`
 1. Create a pull request `hub pull-request -b jwright:master -h jwright:my-awesome-feature`
 
+## RELEASING A NEW GEM
+
+1. Bump the VERSION in `lib/porch/version.rb`
+1. Commit changes and push to GitHub
+1. run `bundle exec rake release`
+
 ## LICENSE
 
 This project is licensed under the [MIT License](LICENSE.md).
