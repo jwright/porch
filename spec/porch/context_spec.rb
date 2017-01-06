@@ -1,6 +1,4 @@
 RSpec.describe Porch::Context do
-  include  Porch::SpecHelper::ContextFailureExample
-
   describe "#initialize" do
     it "can be initialized with a hash" do
       subject = described_class.new({ a: :b, c: :d })
