@@ -17,10 +17,10 @@ module Porch
       self.class.new(self, self.success?)
     end
 
-    def fail!(message="")
+    def fail!(message="", stop_current=true)
       @message = message
       @success = false
-      throw :stop_current_step_execution, self
+      throw :stop_current_step_execution, self if stop_current
     end
 
     def failure?
