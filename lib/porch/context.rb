@@ -27,9 +27,9 @@ module Porch
       !success?
     end
 
-    def guard(skip_current=false, &block)
-      result = super &block
-      skip_remaining!(skip_current) if result.failure?
+    def guard(&block)
+      result = super
+      skip_remaining! if result.failure?
       result
     end
 
@@ -48,9 +48,9 @@ module Porch
       !!@skip_remaining
     end
 
-    def skip_remaining!(skip_current=false)
+    def skip_remaining!
       @skip_remaining = true
-      throw :stop_current_step_execution, self if skip_current
+      throw :stop_current_step_execution, self
     end
 
     def success?

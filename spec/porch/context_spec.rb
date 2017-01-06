@@ -83,17 +83,13 @@ RSpec.describe Porch::Context do
   describe "#guard" do
     subject { described_class.new({email: ""}) }
 
+    around { |example| wrap_skipping_step_catch example }
+
     context "with invalid arguments" do
       it "skips the remaining actions" do
         subject.guard { required(:email).filled }
 
         expect(subject).to be_skip_remaining
-      end
-    end
-
-    context "without skipping the current step" do
-      it "executes the remaining step" do
-        expect { subject.guard(false) { required(:email).filled }}.to_not throw_symbol
       end
     end
   end

@@ -12,7 +12,7 @@ RSpec.describe "skipping actions" do
     private
 
     def first_step(context)
-      context.skip_remaining! true
+      context.skip_remaining!
       context[:got_here] = true
     end
 
