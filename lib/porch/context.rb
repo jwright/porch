@@ -34,7 +34,7 @@ module Porch
     end
 
     def guard!(&block)
-      result = guard &block
+      result = Guard.new(self).against(&block)
       fail!(HumanError.new(result.errors).message) if result.failure?
       result
     end
@@ -50,7 +50,7 @@ module Porch
 
     def skip_remaining!
       @skip_remaining = true
-      throw :stop_current_step_execution, self
+      raise Porch::ContextFailedError.new(self)
     end
 
     def success?

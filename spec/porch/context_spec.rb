@@ -81,11 +81,9 @@ RSpec.describe Porch::Context do
   describe "#guard" do
     subject { described_class.new({email: ""}) }
 
-    around { |example| wrap_skipping_step_catch example }
-
     context "with invalid arguments" do
       it "skips the remaining actions" do
-        subject.guard { required(:email).filled }
+        expect { subject.guard { required(:email).filled } }.to raise_error Porch::ContextFailedError
 
         expect(subject).to be_skip_remaining
       end
@@ -95,17 +93,15 @@ RSpec.describe Porch::Context do
   describe "#guard!" do
     subject { described_class.new({email: ""}) }
 
-    around { |example| wrap_skipping_step_catch example }
-
     context "with invalid arguments" do
       it "marks the context as a failure" do
-        subject.guard! { required(:email).filled }
+        expect { subject.guard! { required(:email).filled } }.to raise_error Porch::ContextFailedError
 
         expect(subject).to be_failure
       end
 
       it "sets the message of the context" do
-        subject.guard! { required(:email).filled }
+        expect { subject.guard! { required(:email).filled } }.to raise_error Porch::ContextFailedError
 
         expect(subject.message).to eq "Email must be filled"
       end
@@ -127,8 +123,6 @@ RSpec.describe Porch::Context do
   describe "#stop_processing?" do
     subject { described_class.new({}, true) }
 
-    around { |example| wrap_skipping_step_catch example }
-
     it "stops when a failure occurs" do
       expect { subject.fail! }.to raise_error Porch::ContextFailedError
 
@@ -136,7 +130,7 @@ RSpec.describe Porch::Context do
     end
 
     it "stops when the remaining actions are skipped" do
-      subject.skip_remaining!
+      expect { subject.skip_remaining! }.to raise_error Porch::ContextFailedError
 
       expect(subject).to be_stop_processing
     end
