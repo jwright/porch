@@ -90,6 +90,12 @@ RSpec.describe Porch::Context do
         expect(subject).to be_skip_remaining
       end
     end
+
+    context "without skipping the current step" do
+      it "executes the remaining step" do
+        expect { subject.guard(false) { required(:email).filled }}.to_not throw_symbol
+      end
+    end
   end
 
   describe "#guard!" do
