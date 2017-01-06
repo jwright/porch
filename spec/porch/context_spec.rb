@@ -116,12 +116,6 @@ RSpec.describe Porch::Context do
         expect(subject.message).to eq "Email must be filled"
       end
     end
-
-    context "without stopping the current step" do
-      it "executes the remaining step" do
-        expect { subject.guard!(false) { required(:email).filled }}.to_not throw_symbol
-      end
-    end
   end
 
   describe "#method_missing" do
