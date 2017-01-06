@@ -33,9 +33,9 @@ module Porch
       result
     end
 
-    def guard!(&block)
+    def guard!(stop_current=true, &block)
       result = guard &block
-      fail!(HumanError.new(result.errors).message) if result.failure?
+      fail!(HumanError.new(result.errors).message, stop_current) if result.failure?
       result
     end
 
