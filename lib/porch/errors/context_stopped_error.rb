@@ -1,5 +1,5 @@
 module Porch
-  class ContextFailedError < RuntimeError
+  class ContextStoppedError < RuntimeError
     attr_reader :context
 
     def initialize(context)

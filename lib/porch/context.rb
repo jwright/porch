@@ -20,7 +20,7 @@ module Porch
     def fail!(message="")
       @message = message
       @success = false
-      raise Porch::ContextFailedError.new(self)
+      raise Porch::ContextStoppedError.new(self)
     end
 
     def failure?
@@ -50,7 +50,7 @@ module Porch
 
     def skip_remaining!
       @skip_remaining = true
-      raise Porch::ContextFailedError.new(self)
+      raise Porch::ContextStoppedError.new(self)
     end
 
     def success?

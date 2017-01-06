@@ -64,14 +64,14 @@ RSpec.describe Porch::Context do
     subject { described_class.new({}, true) }
 
     it "marks the context as failed" do
-      expect { subject.fail! }.to raise_error Porch::ContextFailedError
+      expect { subject.fail! }.to raise_error Porch::ContextStoppedError
 
       expect(subject).to be_failure
     end
 
     context "failing with a message" do
       it "sets the message on the context" do
-        expect { subject.fail! "Better luck next time!" }.to raise_error Porch::ContextFailedError
+        expect { subject.fail! "Better luck next time!" }.to raise_error Porch::ContextStoppedError
 
         expect(subject.message).to eq "Better luck next time!"
       end
@@ -83,7 +83,7 @@ RSpec.describe Porch::Context do
 
     context "with invalid arguments" do
       it "skips the remaining actions" do
-        expect { subject.guard { required(:email).filled } }.to raise_error Porch::ContextFailedError
+        expect { subject.guard { required(:email).filled } }.to raise_error Porch::ContextStoppedError
 
         expect(subject).to be_skip_remaining
       end
@@ -95,13 +95,13 @@ RSpec.describe Porch::Context do
 
     context "with invalid arguments" do
       it "marks the context as a failure" do
-        expect { subject.guard! { required(:email).filled } }.to raise_error Porch::ContextFailedError
+        expect { subject.guard! { required(:email).filled } }.to raise_error Porch::ContextStoppedError
 
         expect(subject).to be_failure
       end
 
       it "sets the message of the context" do
-        expect { subject.guard! { required(:email).filled } }.to raise_error Porch::ContextFailedError
+        expect { subject.guard! { required(:email).filled } }.to raise_error Porch::ContextStoppedError
 
         expect(subject.message).to eq "Email must be filled"
       end
@@ -124,13 +124,13 @@ RSpec.describe Porch::Context do
     subject { described_class.new({}, true) }
 
     it "stops when a failure occurs" do
-      expect { subject.fail! }.to raise_error Porch::ContextFailedError
+      expect { subject.fail! }.to raise_error Porch::ContextStoppedError
 
       expect(subject).to be_stop_processing
     end
 
     it "stops when the remaining actions are skipped" do
-      expect { subject.skip_remaining! }.to raise_error Porch::ContextFailedError
+      expect { subject.skip_remaining! }.to raise_error Porch::ContextStoppedError
 
       expect(subject).to be_stop_processing
     end

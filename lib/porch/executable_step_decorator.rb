@@ -18,7 +18,7 @@ module Porch
       catch :stop_current_step_execution do
         begin
           decorated_step.execute context
-        rescue Porch::ContextFailedError => e
+        rescue Porch::ContextStoppedError => e
           # this exception is just used for flow control
           e.context
         end
