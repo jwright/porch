@@ -20,7 +20,7 @@ module Porch
     def fail!(message="")
       @message = message
       @success = false
-      throw :stop_current_step_execution, self
+      raise Porch::ContextFailedError.new(self)
     end
 
     def failure?

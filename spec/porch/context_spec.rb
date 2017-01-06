@@ -63,17 +63,15 @@ RSpec.describe Porch::Context do
   describe "#fail!" do
     subject { described_class.new({}, true) }
 
-    around { |example| wrap_skipping_step_catch example }
-
     it "marks the context as failed" do
-      subject.fail!
+      expect { subject.fail! }.to raise_error Porch::ContextFailedError
 
       expect(subject).to be_failure
     end
 
     context "failing with a message" do
       it "sets the message on the context" do
-        subject.fail! "Better luck next time!"
+        expect { subject.fail! "Better luck next time!" }.to raise_error Porch::ContextFailedError
 
         expect(subject.message).to eq "Better luck next time!"
       end
@@ -132,7 +130,7 @@ RSpec.describe Porch::Context do
     around { |example| wrap_skipping_step_catch example }
 
     it "stops when a failure occurs" do
-      subject.fail!
+      expect { subject.fail! }.to raise_error Porch::ContextFailedError
 
       expect(subject).to be_stop_processing
     end
