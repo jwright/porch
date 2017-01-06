@@ -127,7 +127,7 @@ module Services
     def register
       with(attributes) do |chain|
         # ...
-        chain.add :send_welcome_email do |context|
+        chain.add do |context|
           UserMailer.welcome(context.user).deliver_later
         end
         # ...
