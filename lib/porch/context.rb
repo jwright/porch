@@ -44,6 +44,12 @@ module Porch
       super
     end
 
+    def next(&block)
+      result = Guard.new(self).against(&block)
+      raise Porch::ContextStoppedError.new(self) if result.failure?
+      result
+    end
+
     def skip_remaining?
       !!@skip_remaining
     end
