@@ -118,12 +118,12 @@ RSpec.describe Porch::Context do
     end
   end
 
-  describe "#next" do
+  describe "#skip_next" do
     subject { described_class.new({email: ""}) }
 
     context "with invalid arguments" do
       it "skips the current action" do
-        expect { subject.next { required(:email).filled } }.to \
+        expect { subject.skip_next { required(:email).filled } }.to \
           raise_error Porch::ContextStoppedError
       end
     end
