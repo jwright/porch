@@ -240,7 +240,7 @@ Several helper methods are included in the `Porch::Context` to guard against an 
 ```
 class SomeStep
   def call(context)
-    context.guard { required(:email) }
+    context.guard_with_skipping { required(:email) }
     # The rest of the action will not be performed and the rest of the actions will be
     # skipped if the guard fails
   end

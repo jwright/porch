@@ -76,12 +76,13 @@ RSpec.describe Porch::Context do
     end
   end
 
-  describe "#guard" do
+  describe "#guard_with_skipping" do
     subject { described_class.new({email: ""}) }
 
     context "with invalid arguments" do
       it "skips the remaining actions" do
-        expect { subject.guard { required(:email).filled } }.to raise_error Porch::ContextStoppedError
+        expect { subject.guard_with_skipping { required(:email).filled } }.to \
+          raise_error Porch::ContextStoppedError
 
         expect(subject).to be_skip_remaining
       end
