@@ -27,14 +27,14 @@ module Porch
       !success?
     end
 
-    def guard(&block)
-      result = super
+    def guard_with_skipping(&block)
+      result = guard &block
       skip_remaining! if result.failure?
       result
     end
 
-    def guard!(&block)
-      result = Guard.new(self).against(&block)
+    def guard_with_failure(&block)
+      result = guard &block
       fail!(HumanError.new(result.errors).message) if result.failure?
       result
     end
@@ -44,7 +44,7 @@ module Porch
       super
     end
 
-    def next(&block)
+    def skip_next(&block)
       result = Guard.new(self).against(&block)
       raise Porch::ContextStoppedError.new(self) if result.failure?
       result

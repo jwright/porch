@@ -240,19 +240,19 @@ Several helper methods are included in the `Porch::Context` to guard against an 
 ```
 class SomeStep
   def call(context)
-    context.guard { required(:email) }
+    context.guard_with_skipping { required(:email) }
     # The rest of the action will not be performed and the rest of the actions will be
     # skipped if the guard fails
   end
 end
 ```
 
-`Porch::Context#guard!` (with a bang(!)) can be used and if the validation fails, the `Context` will be marked as a failure. The failure message for the `Context` will be set to be a comma-seperated list of the context errors that failed.
+`Porch::Context#guard_with_failure` (with a bang(!)) can be used and if the validation fails, the `Context` will be marked as a failure. The failure message for the `Context` will be set to be a comma-seperated list of the context errors that failed.
 
 ```
 class SomeStep
   def call(context)
-    context.guard! { required(:email) }
+    context.guard_with_failure { required(:email) }
     # The rest of the action will not be performed and the rest of the actions will be
     # skipped and the action will be marked as failed if the guard fails
   end

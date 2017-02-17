@@ -12,7 +12,7 @@ RSpec.describe "skipping current action" do
     private
 
     def first_step(context)
-      context.next { required(:blah).filled }
+      context.skip_next { required(:blah).filled }
       context[:got_here] = true
     end
 
