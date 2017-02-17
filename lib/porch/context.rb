@@ -33,8 +33,8 @@ module Porch
       result
     end
 
-    def guard!(&block)
-      result = Guard.new(self).against(&block)
+    def guard_with_failure(&block)
+      result = guard &block
       fail!(HumanError.new(result.errors).message) if result.failure?
       result
     end
