@@ -1,11 +1,13 @@
 RSpec.describe Porch::Rescuable do
   class WeirdError < RuntimeError; end
+  class MethodError < RuntimeError; end
 
   class ReallyScrewedUpClass
     include Porch::Rescuable
 
     attr_reader :result
 
+    rescue_from MethodError, with: :method_handler
     rescue_from WeirdError do |exception|
       @result = exception
     end
@@ -18,6 +20,12 @@ RSpec.describe Porch::Rescuable do
 
     def raise_error(error)
       raise error
+    end
+
+    private
+
+    def method_handler(exception)
+      @result = exception
     end
   end
 
@@ -41,9 +49,17 @@ RSpec.describe Porch::Rescuable do
 
       expect(subject.result).to be_kind_of WeirdError
     end
+  end
 
-    it "is not called when the exception does not match" do
-      expect { subject.safely_raise_error RuntimeError }.to raise_error RuntimeError
+  context "with a method" do
+    it "is called when the exception class matches" do
+      subject.safely_raise_error MethodError
+
+      expect(subject.result).to be_kind_of MethodError
     end
+  end
+
+  it "is not called when the exception does not match" do
+    expect { subject.safely_raise_error RuntimeError }.to raise_error RuntimeError
   end
 end

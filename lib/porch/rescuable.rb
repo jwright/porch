@@ -21,7 +21,13 @@ module Porch
     def rescue_with_handler(exception)
       handler = handler_for_rescue(exception)
       unless handler.nil?
-        self.instance_exec exception, &handler
+        case handler
+        when Symbol
+          self.method(handler).call exception
+        when Proc
+          self.instance_exec exception, &handler
+        end
+
         exception
       end
     end
