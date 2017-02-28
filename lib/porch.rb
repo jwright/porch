@@ -5,6 +5,7 @@ require "porch/executable_step_decorator"
 require "porch/human_error"
 require "porch/guard_rail"
 require "porch/organizer"
+require "porch/rescuable"
 require "porch/step_chain"
 require "porch/version"
 
