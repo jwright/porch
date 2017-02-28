@@ -4,6 +4,12 @@ module Porch
       base.extend ClassMethods
     end
 
+    def handle_exceptions
+      yield if block_given?
+    rescue Exception => e
+      rescue_with_handler(e) || raise(e)
+    end
+
     def handler_for_rescue(exception)
       _, handler = self.class.rescue_handlers.detect do |exception_class, _|
         exception_class === exception

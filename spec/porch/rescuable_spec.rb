@@ -11,9 +11,9 @@ RSpec.describe Porch::Rescuable do
     end
 
     def safely_raise_error(error)
-      raise_error error
-    rescue Exception => e
-      rescue_with_handler(e) || raise(e)
+      handle_exceptions do
+        raise_error error
+      end
     end
 
     def raise_error(error)
@@ -35,13 +35,15 @@ RSpec.describe Porch::Rescuable do
     expect { subject.class.rescue_from RuntimeError }.to raise_error ArgumentError
   end
 
-  it "is called when the exception class matches" do
-    subject.safely_raise_error WeirdError
+  context "with a block" do
+    it "is called when the exception class matches" do
+      subject.safely_raise_error WeirdError
 
-    expect(subject.result).to be_kind_of WeirdError
-  end
+      expect(subject.result).to be_kind_of WeirdError
+    end
 
-  it "is not called when the exception does not match" do
-    expect { subject.safely_raise_error RuntimeError }.to raise_error RuntimeError
+    it "is not called when the exception does not match" do
+      expect { subject.safely_raise_error RuntimeError }.to raise_error RuntimeError
+    end
   end
 end
