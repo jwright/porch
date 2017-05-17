@@ -74,28 +74,6 @@ end
 
 ### Defining steps or actions
 
-You can define steps as classes and include some nice helper methods. (COMING SOON)
-
-```
-# app/services/steps/create_user.rb
-
-require "porch"
-
-class CreateUser
-  include Porch::Step
-
-  params do
-    required(:email).filled(type?: :str, format?: RegEx.email_address)
-    required(:password).filled(type?: :str, min_size?: 8)
-  end
-
-  def call(context)
-    context.user = User.create email: context.email, password: context.password
-    context.fail! context.user.errors unless context.user.valid?
-  end
-end
-```
-
 You can define steps as PORO classes that respond to a call method.
 
 ```
