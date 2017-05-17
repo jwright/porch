@@ -1,13 +1,13 @@
 PATH
   remote: .
   specs:
-    porch (0.3.0)
+    porch (0.3.1)
       dry-validation (~> 0.10.4)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    concurrent-ruby (1.0.4)
+    concurrent-ruby (1.0.5)
     diff-lcs (1.2.5)
     dry-configurable (0.5.0)
       concurrent-ruby (~> 1.0)
