@@ -1,3 +1,5 @@
+require_relative "rescuable"
+
 module Porch
   module Organizer
     attr_reader :context
@@ -9,6 +11,12 @@ module Porch
       yield chain if block_given?
 
       chain.execute context
+    end
+
+    def self.included(base)
+      base.class_eval do
+        include Rescuable
+      end
     end
   end
 end

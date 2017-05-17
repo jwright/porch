@@ -1,9 +1,5 @@
 module Porch
   module Rescuable
-    def self.included(base)
-      base.extend ClassMethods
-    end
-
     def handle_exceptions
       yield if block_given?
     rescue Exception => e
@@ -47,6 +43,10 @@ module Porch
       def rescue_handlers
         @rescue_handlers ||= []
       end
+    end
+
+    def self.included(base)
+      base.extend ClassMethods
     end
   end
 end
