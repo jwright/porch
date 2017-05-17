@@ -181,7 +181,7 @@ end
 
 Errors may be raised within your steps at any point and you may want to handle those errors gracefully.
 
-You can use the `rescue_from` error handlers to handle various errors gracefully.
+You can use the `rescue_from` error handlers to handle various errors gracefully. The error handler will be called for the type of error or a descendent of the type of error.
 
 You can `rescue_from` various errors with a method.
 
