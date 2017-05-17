@@ -39,7 +39,7 @@ RSpec.describe Porch::Organizer do
     end
   end
 
-  xdescribe ".rescue_from" do
+  describe ".rescue_from" do
     class DoSomething
       include Porch::Organizer
 
@@ -64,9 +64,9 @@ RSpec.describe Porch::Organizer do
 
     subject { DoSomething.new }
 
-    it "handles errors that come from any of the steps", focus: true do
+    it "handles errors that come from any of the steps" do
       expect { subject.process }.to_not raise_error
-      # TODO: Expect the result
+      expect(subject.result).to be_kind_of RuntimeError
     end
   end
 end
