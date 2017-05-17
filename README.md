@@ -74,28 +74,6 @@ end
 
 ### Defining steps or actions
 
-You can define steps as classes and include some nice helper methods. (COMING SOON)
-
-```
-# app/services/steps/create_user.rb
-
-require "porch"
-
-class CreateUser
-  include Porch::Step
-
-  params do
-    required(:email).filled(type?: :str, format?: RegEx.email_address)
-    required(:password).filled(type?: :str, min_size?: 8)
-  end
-
-  def call(context)
-    context.user = User.create email: context.email, password: context.password
-    context.fail! context.user.errors unless context.user.valid?
-  end
-end
-```
-
 You can define steps as PORO classes that respond to a call method.
 
 ```
@@ -196,6 +174,40 @@ end
 result = RegistersUser.new(email: "test@example.com").register
 if result.failure?
   puts result.message # => "Better luck next time!"
+end
+```
+
+### Handling/rescuing from errors
+
+Errors may be raised within your steps at any point and you may want to handle those errors gracefully.
+
+You can use the `rescue_from` error handlers to handle various errors gracefully. The error handler will be called for the type of error or a descendent of the type of error.
+
+You can `rescue_from` various errors with a method.
+
+```
+class RegistersUser
+  include Porch::Organizer
+
+  rescue_from [Net::SMTPAuthenticationError, Net::SMTPServerBusy], with: :smtp_error
+
+  private
+
+  def smtp_error(exception)
+    logger.error exception
+  end
+end
+```
+
+You can `rescue_from` various errors with a block.
+
+```
+class RegistersUser
+  include Porch::Organizer
+
+  rescue_from Net::SMTPAuthenticationError do |exception|
+    logger.error exception
+  end
 end
 ```
 

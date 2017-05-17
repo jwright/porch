@@ -6,6 +6,10 @@ RSpec.describe Porch::Organizer do
     expect(subject).to respond_to(:with).with(1).argument
   end
 
+  it "adds a `rescue_from` class method" do
+    expect(subject.class).to respond_to(:rescue_from)
+  end
+
   it "adds access to the context" do
     expect(subject).to respond_to(:context)
   end
@@ -32,6 +36,37 @@ RSpec.describe Porch::Organizer do
         receive(:execute).with(Porch::Context)
 
       subject.with
+    end
+  end
+
+  describe ".rescue_from" do
+    class DoSomething
+      include Porch::Organizer
+
+      attr_reader :result
+
+      rescue_from RuntimeError do |exception|
+        @result = exception
+      end
+
+      def process
+        with do |chain|
+          chain.add :do_something_funky
+        end
+      end
+
+      private
+
+      def do_something_funky(context)
+        raise RuntimeError
+      end
+    end
+
+    subject { DoSomething.new }
+
+    it "handles errors that come from any of the steps" do
+      expect { subject.process }.to_not raise_error
+      expect(subject.result).to be_kind_of RuntimeError
     end
   end
 end
