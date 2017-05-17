@@ -177,6 +177,40 @@ if result.failure?
 end
 ```
 
+### Handling/rescuing from errors
+
+Errors may be raised within your steps at any point and you may want to handle those errors gracefully.
+
+You can use the `rescue_from` error handlers to handle various errors gracefully.
+
+You can `rescue_from` various errors with a method.
+
+```
+class RegistersUser
+  include Porch::Organizer
+
+  rescue_from [Net::SMTPAuthenticationError, Net::SMTPServerBusy], with: :smtp_error
+
+  private
+
+  def smtp_error(exception)
+    logger.error exception
+  end
+end
+```
+
+You can `rescue_from` various errors with a block.
+
+```
+class RegistersUser
+  include Porch::Organizer
+
+  rescue_from Net::SMTPAuthenticationError do |exception|
+    logger.error exception
+  end
+end
+```
+
 ### Skipping steps
 
 At any step, you can skip the remaining actions in the organizer. This stops the running of the remaining actions but the `Porch::Context` will still return a successful `Porch::Context`.
